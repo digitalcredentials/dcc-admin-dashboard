@@ -38,11 +38,13 @@ import Button from '../components/Button.astro';
 <script>
     import QRCode from 'qrcode';
     import { format } from 'date-fns';
-    import * as CredentialHandlerPolyfill from 'credential-handler-polyfill';
+//  COMMENTED OUT NEXT TWO LINES BECAUSE CHAPI DOESN'T WORK WITHOUT HTTPS 
+//   AND WE WANT THIS TO WORK, WITH AS LITTLE FIDDLING AS POSSIBLE, 
+//   FOR THOSE TRYING THIS LOCALLY WITHOUT HTTPS
+//    import * as CredentialHandlerPolyfill from 'credential-handler-polyfill';
+//    await CredentialHandlerPolyfill.loadOnce();
 
-    await CredentialHandlerPolyfill.loadOnce();
-
-    const payloadUrl = import.meta.env.PUBLIC_PAYLOAD_URL;
+    const payloadUrl = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000/api';
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());

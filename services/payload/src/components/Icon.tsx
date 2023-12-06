@@ -5,7 +5,7 @@ export const Icon: React.FC = () => (
   <div className="icon">
     <img
       src="/assets/tdm-logo.png"
-      alt="Tech D Monterrey"
+      alt="Digital Credentials Consortium"
     />
   </div>
 );

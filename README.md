@@ -1,4 +1,11 @@
 # VC Admin Dashboard
+
+THIS IS A FORK OF [https://github.com/learningeconomy/admin-dashboard](https://github.com/learningeconomy/admin-dashboard) AND IS A WORK-IN-PROGRESS. NOT INTENDED FOR GENERAL USE (YET).
+
+WE ARE WORKING TOWARDS A CONFIGURATION OF THIS SYSTEM THAT CAN BE INSTALLED EASILY, STARING WITH A BASIC EVALUATION VERSION THAT CAN BE STARTED UP WITH A SINGLE DOCKER COMMAND, AND THEN PROGRESSIVELY ADDING FEATURES LIKE STATUS MANAGEMENT AND MAIL-OUTS.
+
+CHECK OUT OUR (IN-PROGESS) [GETTING STARTED DOC](docs/GETTING_STARTED.md) FOR A STEP BY STEP GUIDE TO EVALUATING AND INSTALLING THIS SOFTWARE.
+
 [![Release Branch](https://img.shields.io/badge/release_branch-main-green.svg)](https://github.com/learningeconomy/admin-dashboard/tree/main)
 [![Read the Docs](https://img.shields.io/badge/docs-quickstart-green.svg)](https://docs.learncard.com/)
 [![License](https://img.shields.io/badge/license-mit-blue.svg)](https://github.com/learningeconomy/admin-dashboard/blob/main/LICENSE)

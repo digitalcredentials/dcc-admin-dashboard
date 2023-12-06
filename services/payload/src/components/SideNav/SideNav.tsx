@@ -44,7 +44,7 @@ const SideNav: React.FC = () => {
                     />
                 </button>
 
-                <img className="h-15" src={isOpen ? Logo : SmallLogo} alt="Tec de Monterray logo" />
+                <img className="h-15" src={isOpen ? Logo : SmallLogo} alt="Digital Credentials Consortium logo" />
             </header>
 
             <section>

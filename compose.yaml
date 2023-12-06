@@ -1,50 +1,61 @@
-include:
-  - services/dcc-services/compose.yaml
-
 services:
+  coordinator:
+    image: digitalcredentials/workflow-coordinator:0.1.0
+    environment:
+      - ENABLE_STATUS_SERVICE=false
+      - PUBLIC_EXCHANGE_HOST=http://localhost:3000/api 
+      - TENANT_TOKEN_LEF_TEST=UNPROTECTED
+    ports:
+      - "4005:4005"
+  signing:
+    image: digitalcredentials/signing-service:0.1.0
+    environment:
+      - TENANT_SEED_LEF_TEST=z1AeiPT496wWmo9BG2QYXeTusgFSZPNG3T9wNeTtjrQ3rCB
+  transactions:
+    image: digitalcredentials/transaction-service:test
   payload:
-    build: 
-      context: ./services/payload
-      dockerfile: Dockerfile.local
+    image: digitalcredentials/dashboard:test
     container_name: "ad-payload"
     depends_on: 
       - coordinator
       - redis
-    env_file:
-      - ./services/payload/.env
+      - mongo
     environment:
-      COORDINATOR_URL: ${COORDINATOR_URL:-http://coordinator:4005}
-      STATUS_URL: ${STATUS_URL:-http://status:4008}
-      REDIS_URL: ${REDIS_URL:-redis}
-      REDIS_PORT: ${REDIS_PORT:-6379}
+      - COORDINATOR_URL=http://coordinator:4005
+      - REDIS_URL=redis
+      - REDIS_PORT=6379
+      - MONGODB_URI=mongodb://root:example@mongo:27017/
+      - PAYLOAD_SECRET=aaaaaaaaaaaaaaaaaaaaaaaa
+      - TENANT_NAME=lef_test
+      - SMTP_HOST=somehost
+      - SMTP_USER=somename
+      - SMTP_PASS=somepass
+      - EMAIL_FROM=Digital Credentials Consortium <someone@mit.edu>
+      - CLAIM_PAGE_URL=http://localhost:8080
+      - PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3000
     ports:
       - "3000:3000"
     volumes:
       - ./services/payload/src:/home/node/app/src
-    networks: 
-      - dashboard
-
   claim-page:
-    build: ./packages/claim-page
+    image: digitalcredentials/claim-page:test
     container_name: "ad-claim-page"
     depends_on: 
       - payload
-    env_file:
-      - ./packages/claim-page/.env
     ports:
       - "8080:8080"
-    networks: 
-      - dashboard
   redis:
     image: redis:alpine
     container_name: ad-redis
     environment:
       - ALLOW_EMPTY_PASSWORD=${ALLOW_EMPTY_PASSWORD:-yes}
     ports:
-      - "6379:${REDIS_PORT:-6379}"
-    networks:
-      - dashboard
-
-networks:
-  dashboard:
-    driver: bridge
+      - "6379:6379"
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+volumes:
+  transactions:
