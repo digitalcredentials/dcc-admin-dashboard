@@ -1,12 +1,16 @@
-Short story:
+## Getting Started
+
+### Short story
 
 If you've got Docker installed then copy the [compose.yaml](./compose.yaml) file from this repo to somewhere on your machine and run this from the directory where you saved the file:
 
 ```docker compose up```
 
-It'll likely take a minute or two to download all the images from Docker Hub, but once that's all done, you should be able to open a web browser to [http://localhost:3000](http://localhost3000).
+It'll likely take a minute or two to download all the images from Docker Hub, but once that's all done, you should be able to open a web browser to [http://localhost:3000](http://localhost:3000).
 
 You've now got a working admin-dashboard up and running.
+
+### Longer story
 
 This guide now continues on, explaining the system and progressively helping you add features as you go.
 
@@ -16,11 +20,11 @@ So first you'll want to try it out.
 
 a) Open the credential templates screen and start a new template, like so:
 
-![Alt text](docs/screenshots/AddCredTemplate.png)
+![Alt text](screenshots/AddCredTemplate.png)
 
 b) Give your template a 'Title', optionally a 'Description', add any 'Internal Notes' you might like to keep for posterity, and add the template itself:
 
-![Alt text](docs/screenshots/CredTemplateJSONField.png)
+![Alt text](screenshots/CredTemplateMetadataFields.png)
 
 Here is the json that you can paste into that 'Credential Template Json' field:
 
@@ -76,11 +80,11 @@ Okay, we've finished setting up the credential template.
 
 a) Open the email templates screen and start a new template, like so:
 
-![Alt text](docs/screenshots/AddEmailTemplate.png)
+![Alt text](screenshots/AddEmailTemplate.png)
 
 b) Give your template a 'Title', add any 'Internal Notes' you'd like, a 'From' email address, an 'Email Subject Title' and finally either use the default template provided in the 'Email Templates Handlebars Code' field, or add your own, like the sample just below the screenshot.
 
-![Alt text](docs/screenshots/EmailTemplateHandlebarsField.png)
+![Alt text](screenshots/EmailTemplateHandlebarsField.png)
 
 Here's the html that you can copy and paste into that field:
 
@@ -110,17 +114,17 @@ Okay, we've finished setting up the email template.
 
 a) Start the batch:
 
-![Alt text](docs/screenshots/AddBatch.png)
+![Alt text](screenshots/AddBatch.png)
 
 b) Add batch details:
 
-![Alt text](docs/screenshots/AddBatchDetails.png)
+![Alt text](screenshots/AddBatchDetails.png)
 
 and then click Continue
 
 c) Select the credential template we created:
 
-![Alt text](docs/screenshots/SelectCredTemplate.png)
+![Alt text](screenshots/SelectCredTemplate.png)
 
 and then click Continue
 
@@ -136,11 +140,11 @@ Taylor Tuna,Master of Science,Biology,Masters,taylor@example.org
 
 Now upload the CSV:
 
-![Alt text](docs/screenshots/UploadCSV.png)
+![Alt text](screenshots/UploadCSV.png)
 
 You should now see something like this screen, listing your uploaded credentials. You could adjust the data at this point, but we'll continue on.
 
-![Alt text](docs/screenshots/PostCSVUpload.png)
+![Alt text](screenshots/PostCSVUpload.png)
 
 Click Continue
 
@@ -150,13 +154,13 @@ Add an email address to 'Email From'. This is the email address from which you'l
 
 Choose the template we created earlier.
 
-![Alt text](docs/screenshots/SelectEmailTemplate.png) 
+![Alt text](screenshots/SelectEmailTemplate.png) 
 
 Click Continue
 
 f) You should now see a Confirmation screen like the following:
 
-![Alt text](docs/screenshots/ConfirmationScreen.png) 
+![Alt text](screenshots/ConfirmationScreen.png) 
 
 So this is the point where you could - if you were ready - click 'Send' to send out emails to the 
 credential recipients, inviting them to collect their credentials.  But, we haven't configured an
