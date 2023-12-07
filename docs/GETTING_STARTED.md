@@ -2,7 +2,7 @@
 
 ### Short story
 
-If you've got Docker installed then copy the [compose.yaml](./compose.yaml) file from this repo to somewhere on your machine and run this from the directory where you saved the file:
+If you've got Docker installed then copy the [compose.yaml](./compose.yaml) file from this repo to somewhere on your machine and then run this command from the directory where you saved the file:
 
 ```docker compose up```
 
