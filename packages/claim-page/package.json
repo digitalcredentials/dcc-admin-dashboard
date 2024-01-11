@@ -7,7 +7,8 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "dev-local": "-port 3008 astro dev"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.0.0",

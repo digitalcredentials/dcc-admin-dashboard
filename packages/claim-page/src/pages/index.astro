@@ -11,38 +11,12 @@ import Button from '../components/Button.astro';
 
 <Layout title="Getting Credential...">
     <MainSection />
-    <Modal id="main-modal">
-        <main slot="main" class="pt-10 pb-12 px-5 xl:px-10 flex flex-col gap-16 items-center">
-            <header class="flex flex-col items-center gap-6">
-                <h3 class="text-lg xl:text-3xl font-semibold text-slate-900">Scan QR Code</h3>
-
-                <p class="text-center text-sm xl:text-xl leading-6 text-slate-900">
-                    Secure your credential by scanning this code.
-                </p>
-            </header>
-
-            <Image
-                src={Placeholder}
-                class="xl:max-h-60 xl:max-w-60 h-auto w-auto rounded-3xl border"
-                id="modal-qr-code"
-                alt="qr-code"
-            />
-
-            <form class="w-full" method="dialog">
-                <Button class="w-full">Got it!</Button>
-            </form>
-        </main>
-    </Modal>
 </Layout>
 
 <script>
     import QRCode from 'qrcode';
     import { format } from 'date-fns';
-//  COMMENTED OUT NEXT TWO LINES BECAUSE CHAPI DOESN'T WORK WITHOUT HTTPS 
-//   AND WE WANT THIS TO WORK, WITH AS LITTLE FIDDLING AS POSSIBLE, 
-//   FOR THOSE TRYING THIS LOCALLY WITHOUT HTTPS
-//    import * as CredentialHandlerPolyfill from 'credential-handler-polyfill';
-//    await CredentialHandlerPolyfill.loadOnce();
+
 
     const payloadUrl = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000/api';
 
@@ -50,23 +24,23 @@ import Button from '../components/Button.astro';
     const params = Object.fromEntries(urlSearchParams.entries());
 
     const { token } = params;
+    console.log("the token:")
+    console.log(token)
 
     if (!token) window.location.href = '/error';
 
-    const modal = document.getElementById('main-modal') as HTMLDialogElement;
+console.log("after the error")
+
+   
     const title = document.getElementById('title') as HTMLHeadingElement;
     const info1 = document.getElementById('info-1') as HTMLParagraphElement;
     const info2 = document.getElementById('info-2') as HTMLParagraphElement;
     const qrcode = document.getElementById('qr-code') as HTMLImageElement;
-    const modalQrcode = document.getElementById('modal-qr-code') as HTMLImageElement;
-    const downloadButton = document.getElementById('download') as HTMLButtonElement;
-    const qrcodeButton = document.getElementById('scan-qr-code') as HTMLButtonElement;
-
-    qrcodeButton.addEventListener('click', () => modal.showModal());
-
-    title.innerText = 'Getting Credential...';
+    
+    title.innerText = 'Gettingggg Credential...';
 
     try {
+        console.log("about to try the fetch")
         const res = await fetch(`${payloadUrl}/get-credential-links`, {
             headers: { Authorization: `Bearer ${token}` },
         });
@@ -116,22 +90,7 @@ import Button from '../components/Button.astro';
             if (url) {
                 const dataUrl = await QRCode.toDataURL(url);
                 qrcode.src = dataUrl;
-                modalQrcode.src = dataUrl;
             } else window.location.href = '/error';
-
-            const chapiVpr = links[0]?.chapiVPR;
-
-            if (chapiVpr) {
-                downloadButton.addEventListener('click', async () => {
-                    const result = await navigator.credentials.store(
-                        new WebCredential('VerifiablePresentation', chapiVpr, {
-                            recommendedHandlerOrigins: ['https://learncard.app'],
-                        })
-                    );
-
-                    console.log({ result });
-                });
-            }
         }
     } catch (error) {
         console.error(error);

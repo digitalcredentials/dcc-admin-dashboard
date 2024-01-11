@@ -38,7 +38,7 @@ const SelectEmailTemplate = React.forwardRef<HTMLElement, SelectEmailTemplatePro
             indexPath: incomingIndexPath,
         } = formProps;
 
-        const fromSchema = fieldSchema.find(field => field.name === 'from');
+       // const fromSchema = fieldSchema.find(field => field.name === 'from');
         const emailTemplateSchema = fieldSchema.find(field => field.name === 'emailTemplate');
 
         useEffect(() => {
@@ -76,22 +76,6 @@ const SelectEmailTemplate = React.forwardRef<HTMLElement, SelectEmailTemplatePro
                 <p className="text-[--theme-text] text-xl font-medium font-inter mb-15">
                     Select an email template to be sent to the earners.
                 </p>
-
-                <RenderCustomComponent
-                    CustomComponent={fromSchema?.admin?.components?.Field}
-                    DefaultComponent={fieldTypes[fromSchema.type]}
-                    componentProps={{
-                        ...fromSchema,
-                        path: fromSchema.path || 'from',
-                        fieldTypes,
-                        indexPath: incomingIndexPath ? `${incomingIndexPath}.0` : '0',
-                        admin: {
-                            ...(fromSchema.admin || {}),
-                            readOnly,
-                        },
-                        permissions: permissions?.[fromSchema.name],
-                    }}
-                />
 
                 {template &&
                     (fieldsIntersection.missingInCSV.length > 0 ? (
