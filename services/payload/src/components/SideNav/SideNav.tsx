@@ -81,7 +81,7 @@ const SideNav: React.FC = () => {
                 >
                     <img src={Users} alt="users" />
                     <span className={`transition-[font-size]`}>
-                        Credentials
+                        Users
                     </span>
                 </NavLink>
             </section>
