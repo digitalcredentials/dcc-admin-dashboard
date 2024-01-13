@@ -12,7 +12,7 @@ const CredentialsBatchesCollection: CollectionConfig = {
     access: {
         delete: async ({ id }) => {
             try {
-                if (!id) return false;
+                if (!id) return true;
 
                 const doc = await payload.findByID({ collection: 'credential-batch', id });
 
