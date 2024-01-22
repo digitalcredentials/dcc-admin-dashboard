@@ -17,20 +17,14 @@ import Button from '../components/Button.astro';
     import QRCode from 'qrcode';
     import { format } from 'date-fns';
 
-
     const payloadUrl = import.meta.env.PUBLIC_PAYLOAD_URL || 'http://localhost:3000/api';
 
     const urlSearchParams = new URLSearchParams(window.location.search);
     const params = Object.fromEntries(urlSearchParams.entries());
 
     const { token } = params;
-    console.log("the token:")
-    console.log(token)
 
     if (!token) window.location.href = '/error';
-
-console.log("after the error")
-
    
     const title = document.getElementById('title') as HTMLHeadingElement;
     const info1 = document.getElementById('info-1') as HTMLParagraphElement;
@@ -40,11 +34,19 @@ console.log("after the error")
     title.innerText = 'Gettingggg Credential...';
 
     try {
-        console.log("about to try the fetch")
+    
         const res = await fetch(`${payloadUrl}/get-credential-links`, {
             headers: { Authorization: `Bearer ${token}` },
         });
 
+        console.log('setting the expiration timeout')
+        setTimeout(() => {
+            // We redirect nine minutes (540000 ms) after the page loads, 
+            // since the exchange endpoint expires after ten minutes.
+            console.log("Redirecting....");
+            window.location.replace("/expired");
+        }, 540000);
+       
         if (res.status !== 200) window.location.href = '/error';
         else {
             const {
