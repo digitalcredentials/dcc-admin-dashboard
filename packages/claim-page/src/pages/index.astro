@@ -30,8 +30,9 @@ import Button from '../components/Button.astro';
     const info1 = document.getElementById('info-1') as HTMLParagraphElement;
     const info2 = document.getElementById('info-2') as HTMLParagraphElement;
     const qrcode = document.getElementById('qr-code') as HTMLImageElement;
+    const directAnchorLink = document.getElementById('link-direct') as HTMLAnchorElement;
     
-    title.innerText = 'Gettingggg Credential...';
+    title.innerText = 'Getting Credential...';
 
     try {
     
@@ -92,6 +93,7 @@ import Button from '../components/Button.astro';
             if (url) {
                 const dataUrl = await QRCode.toDataURL(url);
                 qrcode.src = dataUrl;
+                directAnchorLink.href = url
             } else window.location.href = '/error';
         }
     } catch (error) {
