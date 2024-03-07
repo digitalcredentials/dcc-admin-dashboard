@@ -91,6 +91,7 @@ out
 # Nuxt.js build / generate output
 .nuxt
 dist
+build
 
 # Gatsby files
 .cache/
@@ -162,5 +163,8 @@ dist
 
 # Ignore code-workspaces
 *.code-workspace
+
+# OSX
+.DS_Store
 
 # End of https://www.toptal.com/developers/gitignore/api/node,visualstudiocode

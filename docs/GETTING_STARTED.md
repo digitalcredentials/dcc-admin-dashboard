@@ -2,7 +2,11 @@
 
 ### Short story
 
-If you've got Docker installed then copy the [compose.yaml](./compose.yaml) file from this repo to somewhere on your machine and then run this command from the directory where you saved the file:
+If you've got Docker installed then you can run the dashboard from docker hub images with this command:
+
+```curl https://raw.githubusercontent.com/digitalcredentials/docs/jc-compose-files/deployment-guide/docker-compose-files/admin-dashboard-compose.yaml | docker compose -f - up```
+
+Alternatively, if you've checked out this repository, and want to run the dashboard from the source code, you run (from the root directory of this repo):
 
 ```docker compose up```
 
