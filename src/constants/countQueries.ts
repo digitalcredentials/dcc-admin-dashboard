@@ -1,4 +1,4 @@
-import { CREDENTIAL_BATCH_STATUS } from '../constants/batches';
+import { CREDENTIAL_BATCH_STATUS } from './batches';
 
 // payload localAPI query object for getting credential batches that are of sent status
 export const totalSentBatchesQuery = { status: CREDENTIAL_BATCH_STATUS.SENT };
