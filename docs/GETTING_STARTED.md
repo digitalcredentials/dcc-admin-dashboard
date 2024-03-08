@@ -14,6 +14,8 @@ It'll likely take a minute or two to download all the images from Docker Hub, bu
 
 You've now got a working admin-dashboard up and running.
 
+You'll initially be prompted to create a first user. Do that and then...
+
 ### Longer story
 
 This guide now continues on, explaining the system and progressively helping you add features as you go.
@@ -175,3 +177,38 @@ So hopefully to this point you've gotten a sense of how things work on the admin
 If you'd now like to get a sense of what the student sees, and how they collect their credentials, we've got to configure our application by specifying a mail server to send emails, and we need to expose our collection endpoint so the [Learner Credential Wallet](http://lcw.app) can collect our credentials.
 
 Let's start with email... 
+
+#### Configure mail
+
+You'll need an outgoing SMTP mail server like sendgrid or potentially your own current email address if you can directly send emails to your server.
+
+Take a look at the [.env.sample](.env.sample) to see how to set the three variables for mail:
+
+```
+SMTP_HOST=<SMTP HOST>
+SMTP_USER=<SMTP USER>
+SMTP_PASS=<SMTP PASSWORD>
+```
+
+Once that's set you can now 'Send' your credentials as described in the prior step, but first...
+
+#### Collection endpoint
+
+You can now send out the emails, which will contain a link that the student can click
+to collect their credentials. That link takes the student to a claim page from which they
+can click another link that will open a wallet that will download the credential.
+
+So we need to configure those two links for the claim page and collection endpoint. They are
+similarly set in the the [.env.sample](.env.sample) as:
+
+```
+CLAIM_PAGE_URL=http://localhost:8080
+PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3000
+```
+
+The first is where the claim page runs, and the second is where the admin-dashboard (this repo) runs.
+
+The defaults are set to localhost, but to be useful with the wallet, which is an app that runs on a phone, they'll have to be set to a publically accessible url. This is the point where you 
+need to deploy your app to a server with a public IP or domain name. Essentially, you'll need to run the same docker compose, but on a public server, ideally with a domain name, then set it for the claim page and dashboard.
+
+We've got another docker compose file that you can use as a template that includes nginx configurations to support your domain name and certificates. TODO add nginx compose.
