@@ -5,12 +5,6 @@ CHECK OUT OUR [GETTING STARTED DOC](docs/GETTING_STARTED.md) FOR A STEP BY STEP 
 [![Release Branch](https://img.shields.io/badge/release_branch-main-green.svg)](https://github.com/digitalcredentials/admin-dashboard/tree/main)
 [![License](https://img.shields.io/badge/license-mit-blue.svg)](https://github.com/digitalcredentials/admin-dashboard/blob/main/LICENSE)
 
-<p float="left">
-  <img src="https://github.com/learningeconomy/admin-dashboard/assets/2185016/9926ded7-40e9-4f18-a89a-bd788274903e" width="200" />
-    <img src="https://github.com/learningeconomy/admin-dashboard/assets/2185016/31882ce0-ce6e-4661-8c42-e64958accfc3" width="350" height="0" /> 
-  <img src="https://github.com/learningeconomy/admin-dashboard/assets/2185016/31882ce0-ce6e-4661-8c42-e64958accfc3" width="350" /> 
-</p>
-
 A system for:
 
 * uploading and managing credential data

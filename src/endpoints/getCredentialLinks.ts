@@ -12,18 +12,14 @@ const tenantName = process.env.TENANT_NAME ?? 'test';
 
 export const getCredentialLinks: PayloadHandler = async (req, res) => {
     let id: string;
+    let token: string;
 
-    const authHeader = req.headers.authorization;
-
-    if (!authHeader.startsWith('Bearer ')) return res.sendStatus(401);
-
-    const token = authHeader.split('Bearer ')[1];
-
-    try {
+    try { 
+        const authHeader = req.headers.authorization;
+        if (authHeader && !authHeader.startsWith('Bearer ')) return res.sendStatus(401);
+        token = authHeader.split('Bearer ')[1];
         const decoded = jwt.verify(token, secret);
-
         if (typeof decoded === 'string' || !decoded.id) return res.sendStatus(401);
-
         id = decoded.id;
     } catch (error) {
         return res.sendStatus(401);
