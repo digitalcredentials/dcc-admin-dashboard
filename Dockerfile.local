@@ -12,4 +12,5 @@ EXPOSE 3000
 
 #CMD ["pnpm", "dev"]
 
-CMD ["npm", "dev"]
+#CMD ["npm", "dev"]
+CMD ["npm", "run", "dev"]
