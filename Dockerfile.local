@@ -4,9 +4,13 @@ WORKDIR /home/node/app
 
 COPY . .
 
-RUN npm i -g pnpm
-RUN pnpm i
+#RUN npm i -g pnpm
+#RUN pnpm i
+RUN npm install
 
 EXPOSE 3000
 
-CMD ["pnpm", "dev"]
+#CMD ["pnpm", "dev"]
+
+#CMD ["npm", "dev"]
+CMD ["npm", "run", "dev"]
