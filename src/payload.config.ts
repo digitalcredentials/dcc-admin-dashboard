@@ -12,6 +12,7 @@ import SideNav from './components/SideNav/SideNav';
 
 //endpoints
 import { readPayloadVersion } from './endpoints/readPayloadVersion';
+import { getClaimConfig } from './endpoints/getClaimConfig'
 import { createBatchCredentials } from './endpoints/createCredentialsForBatch';
 import { getBatchCredentials } from './endpoints/getBatchCredentials';
 import { getBatchFields } from './endpoints/getBatchFields';
@@ -98,6 +99,7 @@ export default buildConfig({
         { method: 'post', path: '/send-email', handler: sendEmail },
         { method: 'post', path: '/send-batch-email', handler: sendBatchEmail },
         { method: 'get', path: '/payload-version', handler: readPayloadVersion },
+        { method: 'get', path: '/claim-config', handler: getClaimConfig },
         { method: 'post', path: '/get-batch-credentials', handler: getBatchCredentials },
         { method: 'post', path: '/get-batch-fields', handler: getBatchFields },
         { method: 'post', path: '/create-batch-credentials', handler: createBatchCredentials },

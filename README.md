@@ -22,10 +22,21 @@ A system for:
 - **VC-API**: Compatible with the Verifiable Credential API exchange endpoints.
 - **Deployment**: Fully dockerized for ease of deployment.
 
+## Claim page
+
 NOTE: The claim page is packaged separately. Ultimately you can use any claim page you like, but here's one that works with the dashboard:  [admin-dashboard-claim-page](https://github.com/digitalcredentials/admin-dashboard-claim-page). 
 
 You'd typically configure it to run alongside the admin-dashboard in a docker compose as described in our [deployment guide](https://github.com/digitalcredentials/docs/blob/jc-compose-files/deployment-guide/DCCDeploymentGuide.md)
 
+### Claim page logo
+
+You may want to change the logo on the claim page. You can change the logo on the DCC Claim page by updating the claim page code itself (and rebuilding) or by setting three environment variables when running your instance of this admin dashboard, like this example:
+
+CLAIM_PAGE_LOGO_URL=https://upload.wikimedia.org/wikipedia/commons/4/40/Image_test.png
+CLAIM_PAGE_LOGO_WIDTH=433
+CLAIM_PAGE_LOGO_HEIGHT=291
+
+Every time the claim page loads it calls the dashboard to ask for these images. If they are set, the claim page uses the returned image and dimensions.
 
 ## Contributing
 
