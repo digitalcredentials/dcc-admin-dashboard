@@ -1,28 +1,84 @@
-## Getting Started
+## DCC Admin Dashboard Setup and Use
 
-### Short story
+This guide explains how to run a hosted instance from which you can issue verifiable credentials, including sending out email notifications to collect credentials 
+into the Learner Credential Wallet. This setup will typically from a half day to a day to set up.
 
-If you've got Docker installed then you can run the dashboard from docker hub images with this command:
+### Requirements
 
-```curl https://raw.githubusercontent.com/digitalcredentials/docs/jc-compose-files/deployment-guide/docker-compose-files/admin-dashboard-compose.yaml | docker compose -f - up```
+There are essentially four fundamental requirements:
 
-Alternatively, if you've checked out this repository, and want to run the dashboard from the source code, you run (from the root directory of this repo):
+#### A server with a domain name
 
-```docker compose up```
+You'll need a server with a domain name to allow students to collect credentials. We use AWS for our test instance, but any will do, provided you can install Docker.
 
-It'll likely take a minute or two to download all the images from Docker Hub, but once that's all done, you should be able to open a web browser to [http://localhost:3000](http://localhost:3000).
+#### Docker
 
-You've now got a working admin-dashboard up and running.
+You will need to have Docker running on your server. Docker provides [installation instructions](https://docs.docker.com/engine/install/) but you can typically also find online guides for your specific environment (e.g., AWS).
 
-You'll initially be prompted to create a first user. Do that and then...
+#### Mongo
 
-### Longer story
+The example version of the dashboard uses a pre-packaged Mongo instance, but for production you'll likely want your own instance running locally or in the cloud with something like [Mongo Atlas](https://www.mongodb.com/products/platform/atlas-database)
 
-This guide now continues on, explaining the system and progressively helping you add features as you go.
+Mongo is used to store CSV uploads of the credentials you want to issue, including the email addresses of the recipients to allow sending email notifications, and to keep track of what's been issued and what's been collected.
 
-So first you'll want to try it out.
+#### SMTP mail server
 
-1. First up, create a template for the Verifiable Credentials that you'd like to issue: 
+You'll need an SMTP mail server to send notifications to recipients. Any SMTP server is fine, for example, SendGrid or MailChimp. Sometimes you can even use your own personal email account if your email provider allows direct SMTP sends. I've successfully used my MIT email address for example. Standard gmail accounts can supposedly also be used by changing a setting in your gmail account. At some point, however, you may hit limits on your personal email account, so do be careful. Whatever smtp service you end up using, you'll need three values for your SMTP service:
+
+* SMTP HOST
+* SMTP USER
+* SMTP PASSWORD
+
+### Configuration
+
+Once you've got your server with Docker installed, a domain name, a mongo instance, and an smtp server then you can configure your dashboard.
+
+We typically expect people will run the dashboard as part of a docker compose file, setting configuration values as environment variables directly in the docker compose file or in an .env or in whatever form you prefer to set environment variables. We provide a sample docker compose file [here](https://github.com/digitalcredentials/docs/blob/main/deployment-guide/docker-compose-files/dashboard-dns-compose.yaml) that you can save to any directory on your server - calling it compose.yaml - and configure.
+
+You'll need to set these environment variables:
+
+```
+      - MONGODB_URI=mongodb://root:example@mongo:27017/
+      - SMTP_HOST=somehost
+      - SMTP_USER=somename
+      - SMTP_PASS=somepass
+      - EMAIL_FROM=Digital Credentials Consortium <someone@mit.edu>
+```
+
+The smtp values are self-explanatory.
+
+The mongodb_uri is the mongo connection string that you can get from your mongo installation (e.g, from your mongo atlas instance). The value that appears in the sample compose points at a  instance of mongo that is running within the docker compose network, but you'll likely want to replace that with a more stable instance of mongo. You can use the sample initially, but once you've set your own value be sure to remove the part of the compose file that describes the local mongo, i.e, this bit:
+
+```
+mongo:
+    image: mongo
+    container_name: "ad-mongo"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes: 
+      - mongo_data:/data/db
+```
+
+Also remove 'mongo' from the 'dependsOn' section of the 'payload' service, and 'mongo_data:' from the 'volumes' section. 
+
+The final value to configure is the domain name, but we've tried to make that a little bit easier by allowing you to include that name on the command line when you start docker
+
+So now start up your server by running this from the command line, while in the same directory that you saved your 'compose.yaml' file:
+
+```HOST=myhost.org docker compose up```
+
+where, of course, you'll replace myhost.org with your domain name.
+
+That should now download the various docker images from docker hub (which might take a few minutes) and start up your dashboard. 
+
+On to how to use it...
+
+### Using the Dashboard
+
+You'll initially be prompted to create a first user. Do that and then:
+
+1. Create a template for the Verifiable Credentials that you'd like to issue: 
 
 a) Open the credential templates screen and start a new template, like so:
 
@@ -169,46 +225,9 @@ f) You should now see a Confirmation screen like the following:
 ![Alt text](screenshots/ConfirmationScreen.png) 
 
 So this is the point where you could - if you were ready - click 'Send' to send out emails to the 
-credential recipients, inviting them to collect their credentials.  But, we haven't configured an
-email server, so the emails won't actually be sent.
+credential recipients, inviting them to collect their credentials.  That process should be self-explanatory (and if not let us know how we can improve it!)
 
-So hopefully to this point you've gotten a sense of how things work on the adminstrative side.
+Enjoy!
 
-If you'd now like to get a sense of what the student sees, and how they collect their credentials, we've got to configure our application by specifying a mail server to send emails, and we need to expose our collection endpoint so the [Learner Credential Wallet](http://lcw.app) can collect our credentials.
 
-Let's start with email... 
 
-#### Configure mail
-
-You'll need an outgoing SMTP mail server like sendgrid or potentially your own current email address if you can directly send emails to your server.
-
-Take a look at the [.env.sample](.env.sample) to see how to set the three variables for mail:
-
-```
-SMTP_HOST=<SMTP HOST>
-SMTP_USER=<SMTP USER>
-SMTP_PASS=<SMTP PASSWORD>
-```
-
-Once that's set you can now 'Send' your credentials as described in the prior step, but first...
-
-#### Collection endpoint
-
-You can now send out the emails, which will contain a link that the student can click
-to collect their credentials. That link takes the student to a claim page from which they
-can click another link that will open a wallet that will download the credential.
-
-So we need to configure those two links for the claim page and collection endpoint. They are
-similarly set in the the [.env.sample](.env.sample) as:
-
-```
-CLAIM_PAGE_URL=http://localhost:8080
-PAYLOAD_PUBLIC_SERVER_URL=http://localhost:3000
-```
-
-The first is where the claim page runs, and the second is where the admin-dashboard (this repo) runs.
-
-The defaults are set to localhost, but to be useful with the wallet, which is an app that runs on a phone, they'll have to be set to a publically accessible url. This is the point where you 
-need to deploy your app to a server with a public IP or domain name. Essentially, you'll need to run the same docker compose, but on a public server, ideally with a domain name, then set it for the claim page and dashboard.
-
-We've got another docker compose file that you can use as a template that includes nginx configurations to support your domain name and certificates. TODO add nginx compose.
