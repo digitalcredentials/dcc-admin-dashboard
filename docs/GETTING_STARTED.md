@@ -7,23 +7,23 @@ into the Learner Credential Wallet. This setup will typically from a half day to
 
 There are essentially four fundamental requirements:
 
-#### A server with a domain name
+#### 1. A server with a domain name
 
 You'll need a server with a domain name to allow students to collect credentials. We use AWS for our test instance, but any will do, provided you can install Docker.
 
-**IMPORTANT**: We use an AWS t3.xlarge instance with 30Gigs of storage for our testing, but the dashboard has also been deployed to an AWS t2.medium instance. If you find that your server is hanging up when starting the dashboard, consider upgrading your instance.
+**IMPORTANT**: We use an AWS t3.xlarge instance with 30Gigs of storage for our testing, but the dashboard has also been deployed to an AWS t2.medium instance. We do know that it won't run on a  t2.micro instance. If you find that your server is hanging up when starting the dashboard, consider upgrading your instance.
 
-#### Docker
+#### 2. Docker
 
 You will need to have Docker running on your server. Docker provides [installation instructions](https://docs.docker.com/engine/install/) but you can typically also find online guides for your specific environment (e.g., AWS).
 
-#### Mongo
+#### 3. Mongo
 
 The example version of the dashboard uses a pre-packaged Mongo instance, but for production you'll likely want your own instance running locally or in the cloud with something like [Mongo Atlas](https://www.mongodb.com/products/platform/atlas-database)
 
 Mongo is used to store CSV uploads of the credentials you want to issue, including the email addresses of the recipients to allow sending email notifications, and to keep track of what's been issued and what's been collected.
 
-#### SMTP mail server
+#### 4. SMTP mail server
 
 You'll need an SMTP mail server to send notifications to recipients. Any SMTP server is fine, for example, SendGrid or MailChimp. Sometimes (but not always) you can even use your own personal email account if your email provider allows direct SMTP sends. I've successfully used my MIT email address for example. Standard gmail accounts can supposedly also be used by changing a setting in your gmail account. At some point, however, you may hit limits on your personal email account, so do be careful. Whatever smtp service you end up using, you'll need three values for your SMTP service:
 
