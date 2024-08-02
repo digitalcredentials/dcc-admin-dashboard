@@ -11,6 +11,8 @@ There are essentially four fundamental requirements:
 
 You'll need a server with a domain name to allow students to collect credentials. We use AWS for our test instance, but any will do, provided you can install Docker.
 
+**IMPORTANT**: We use an AWS t3.xlarge instance with 30Gigs of storage for our testing, but the dashboard has also been deployed to an AWS t2.medium instance. If you find that your server is hanging up when starting the dashboard, consider upgrading your instance.
+
 #### Docker
 
 You will need to have Docker running on your server. Docker provides [installation instructions](https://docs.docker.com/engine/install/) but you can typically also find online guides for your specific environment (e.g., AWS).
@@ -23,7 +25,7 @@ Mongo is used to store CSV uploads of the credentials you want to issue, includi
 
 #### SMTP mail server
 
-You'll need an SMTP mail server to send notifications to recipients. Any SMTP server is fine, for example, SendGrid or MailChimp. Sometimes you can even use your own personal email account if your email provider allows direct SMTP sends. I've successfully used my MIT email address for example. Standard gmail accounts can supposedly also be used by changing a setting in your gmail account. At some point, however, you may hit limits on your personal email account, so do be careful. Whatever smtp service you end up using, you'll need three values for your SMTP service:
+You'll need an SMTP mail server to send notifications to recipients. Any SMTP server is fine, for example, SendGrid or MailChimp. Sometimes (but not always) you can even use your own personal email account if your email provider allows direct SMTP sends. I've successfully used my MIT email address for example. Standard gmail accounts can supposedly also be used by changing a setting in your gmail account. At some point, however, you may hit limits on your personal email account, so do be careful. Whatever smtp service you end up using, you'll need three values for your SMTP service:
 
 * SMTP HOST
 * SMTP USER
@@ -45,7 +47,7 @@ You'll need to set these environment variables:
       - EMAIL_FROM=Digital Credentials Consortium <someone@mit.edu>
 ```
 
-The smtp values are self-explanatory.
+The smtp values are hopefully self-explanatory, and typically clearly provided by your email service.
 
 The mongodb_uri is the mongo connection string that you can get from your mongo installation (e.g, from your mongo atlas instance). The value that appears in the sample compose points at a  instance of mongo that is running within the docker compose network, but you'll likely want to replace that with a more stable instance of mongo. You can use the sample initially, but once you've set your own value be sure to remove the part of the compose file that describes the local mongo, i.e, this bit:
 
