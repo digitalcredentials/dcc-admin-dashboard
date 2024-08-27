@@ -25,7 +25,7 @@ Mongo is used to store CSV uploads of the credentials you want to issue, includi
 
 #### 4. SMTP mail server
 
-You'll need an SMTP mail server to send notifications to recipients. Any SMTP server is fine, for example, SendGrid or MailChimp. Sometimes (but not always) you can even use your own personal email account if your email provider allows direct SMTP sends. I've successfully used my MIT email address for example. Standard gmail accounts can supposedly also be used by changing a setting in your gmail account. At some point, however, you may hit limits on your personal email account, so do be careful. Whatever smtp service you end up using, you'll need three values for your SMTP service:
+You'll need an SMTP mail server to send notifications to recipients. Any SMTP server is fine, for example, SendGrid, MailChimp, or [SMTP2G](https://www.smtp2go.com/) which seemed to work pretty well. Sometimes (but not always) you can even use your own personal email account if your email provider allows direct SMTP sends. I've successfully used my MIT email address for example. Standard gmail accounts can supposedly also be used by changing a setting in your gmail account. At some point, however, you may hit limits on your personal email account, so do be careful. Whatever smtp service you end up using, you'll need three values for your SMTP service:
 
 * SMTP HOST
 * SMTP USER
