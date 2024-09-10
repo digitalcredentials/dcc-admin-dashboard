@@ -2,7 +2,8 @@ import { PayloadHandler } from 'payload/config';
 import payload from 'payload';
 import { CREDENTIAL_STATUS } from '../constants/credentials';
 
-const statusUrl = process.env.STATUS_URL ?? 'http://localhost:4008';
+const coordinatorUrl = process.env.COORDINATOR_URL ?? 'http://localhost:4005';
+const tenantName = process.env.TENANT_NAME ?? 'test';
 
 export const revokeCredential: PayloadHandler = async (req, res) => {
     if (!req.user) return res.sendStatus(401);
@@ -11,12 +12,12 @@ export const revokeCredential: PayloadHandler = async (req, res) => {
     const { reason } = req.body;
 
     try {
-        const fetchResponse = await fetch(`${statusUrl}/credentials/status`, {
+        const fetchResponse = await fetch(`${coordinatorUrl}/instance/:tenantName/credentials/status`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 credentialId: id,
-                credentialStatus: [{ type: 'StatusList2021Credential', status: 'revoked' }],
+                credentialStatus: [{ type: 'BitstringStatusListCredential', status: 'revoked' }],
             }),
         });
 
