@@ -49,7 +49,7 @@ export const getCredentialLinks: PayloadHandler = async (req, res) => {
         ) as any as UnsignedVC;
 
         // Prep for sending to signing service
-        builtCredential.id = id;
+        builtCredential.id = `urn:uuid:${id}`;
         if (typeof builtCredential?.issuer === 'string') builtCredential.issuer = {};
         if ('id' in (builtCredential?.issuer ?? {})) delete builtCredential.issuer.id;
 

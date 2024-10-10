@@ -9,13 +9,14 @@ export const revokeCredential: PayloadHandler = async (req, res) => {
 
     const { id } = req.params;
     const { reason } = req.body;
+    const credentialId = `urn:uuid:${id}`
 
     try {
         const fetchResponse = await fetch(`${statusUrl}/credentials/status`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                credentialId: id,
+                credentialId,
                 credentialStatus: [{ type: 'StatusList2021Credential', status: 'revoked' }],
             }),
         });
