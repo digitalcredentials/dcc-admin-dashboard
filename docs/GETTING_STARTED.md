@@ -1,7 +1,14 @@
 ## DCC Admin Dashboard Setup and Use
 
-This guide explains how to run a hosted instance from which you can issue verifiable credentials, including sending out email notifications to collect credentials 
-into the Learner Credential Wallet. This setup will typically from a half day to a day to set up.
+This guide explains how to run a hosted instance from which you can issue verifiable credentials, and:
+
+- upload credential data via CSV
+- add custom Verifiable Credential templates for issuance
+- add custom HTML templates for email notifications
+- send out email notifications to recipients including links using which they can collect credentials into the Learner Credential Wallet
+- manage credential status, including revocation
+
+This setup will typically from a half day to a day to set up.
 
 ### Requirements
 
@@ -19,9 +26,15 @@ You will need to have Docker running on your server. Docker provides [installati
 
 #### 3. Mongo
 
-The example version of the dashboard uses a pre-packaged Mongo instance, but for production you'll likely want your own instance running locally or in the cloud with something like [Mongo Atlas](https://www.mongodb.com/products/platform/atlas-database)
+The example versions of the dashboard described below use either a pre-configured docker Mongo instance running as a service within the compose file, or show how to set a mongo connection string. For production you'll likely want a connection string pointing at either your own instance running locally or an instance in the cloud with something like [Mongo Atlas](https://www.mongodb.com/products/platform/atlas-database)
 
 Mongo is used to store CSV uploads of the credentials you want to issue, including the email addresses of the recipients to allow sending email notifications, and to keep track of what's been issued and what's been collected.
+
+You may optionally use the same Mongo instance, or a different instance, to manage credential status, which effectively allows you to revoke credentials after issuance. At the moment, the status service can NOT use a mongo
+instance running as a service in the compose because the status service relies on transactions and a single 
+mongo service in a compose file does not support transactions (as yet). If you really want to work with mongo
+as a service in the compose, there are potential workarounds that you can find with Google, including possibly
+running two mongo services in the single compose, thereby creating a kind of cluster that can support transactions.
 
 #### 4. SMTP mail server
 
@@ -33,11 +46,40 @@ You'll need an SMTP mail server to send notifications to recipients. Any SMTP se
 
 ### Configuration
 
-Once you've got your server with Docker installed, a domain name, a mongo instance, and an smtp server then you can configure your dashboard.
+Once you've got your server ready, with Docker installed, a domain name, a mongo instance, and an smtp server then you can configure your dashboard.
 
-We typically expect people will run the dashboard as part of a docker compose file, setting configuration values as environment variables directly in the docker compose file or in an .env or in whatever form you prefer to set environment variables. We provide a sample docker compose file [here](https://github.com/digitalcredentials/docs/blob/main/deployment-guide/docker-compose-files/dashboard-dns-compose.yaml) that you can save to any directory on your server - calling it compose.yaml - and configure.
+We typically expect people will run the dashboard as part of a docker compose file, setting configuration values as environment variables directly in the docker compose file or in an .env or however you prefer to set environment variables. 
 
-You'll need to set these environment variables:
+We provide a couple of sample docker compose files to help you get started and that you can save to any directory on your server - calling it compose.yaml - and configure.
+
+#### With revocation support
+
+ [Example compose with revocation support](https://github.com/digitalcredentials/docs/blob/main/deployment-guide/docker-compose-files/dashboard-status-compose.yaml) 
+ 
+ You'll need to set these environment variables in the 'payload' service:
+
+```
+      - MONGODB_URI=mongodb+srv://your-mongo-user:your-mongo-password@cluster0.8s9a0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      - SMTP_HOST=somehost
+      - SMTP_USER=somename
+      - SMTP_PASS=somepass
+      - EMAIL_FROM=Digital Credentials Consortium <someone@mit.edu>
+```
+
+You'll also need to set the CRED_STATUS_DB_URL in the 'status' service to your mongo instance:
+
+```
+      - CRED_STATUS_DB_URL=mongodb+srv://your-mongo-user:your-mongo-password@cluster0.8s9a0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+```
+The smtp values are hopefully self-explanatory, and are typically clearly provided by your email service.
+
+The mongodb_uri is the mongo connection string that you can get from your mongo installation (e.g, from your mongo atlas instance).
+
+#### Without revocation support
+
+ [Example compose without revocation support](https://github.com/digitalcredentials/docs/blob/main/deployment-guide/docker-compose-files/dashboard-dns-compose.yaml) 
+
+ As with the prior example you'll need to set these environment variables in the 'payload' service:
 
 ```
       - MONGODB_URI=mongodb://root:example@mongo:27017/
@@ -47,9 +89,7 @@ You'll need to set these environment variables:
       - EMAIL_FROM=Digital Credentials Consortium <someone@mit.edu>
 ```
 
-The smtp values are hopefully self-explanatory, and typically clearly provided by your email service.
-
-The mongodb_uri is the mongo connection string that you can get from your mongo installation (e.g, from your mongo atlas instance). The value that appears in the sample compose points at a  instance of mongo that is running within the docker compose network, but you'll likely want to replace that with a more stable instance of mongo. You can use the sample initially, but once you've set your own value be sure to remove the part of the compose file that describes the local mongo, i.e, this bit:
+Here the value that appears in the sample compose for the 'payload' service points at an instance of mongo that is running within the docker compose network, but you'll likely want to replace that with a more stable instance of mongo. You can use the sample initially, but once you've set your own value be sure to remove the part of the compose file that describes the local mongo, i.e, this bit:
 
 ```
 mongo:
@@ -63,6 +103,8 @@ mongo:
 ```
 
 Also remove 'mongo' from the 'dependsOn' section of the 'payload' service, and 'mongo_data:' from the 'volumes' section. 
+
+### Starting the compose
 
 The final value to configure is the domain name, but we've tried to make that a little bit easier by allowing you to include that name on the command line when you start docker
 
