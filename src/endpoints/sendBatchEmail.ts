@@ -48,6 +48,7 @@ export const sendBatchEmail: PayloadHandler = async (req, res, next) => {
         where: { ...query }, // pass a `where` query here
         sort: '-title',
         locale: 'en',
+        pagination: false
     });
 
     const handlebarsTemplate = Handlebars.compile(emailTemplate);
