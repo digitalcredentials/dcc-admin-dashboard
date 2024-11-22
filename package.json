@@ -1,7 +1,7 @@
 {
   "name": "@admindashboard/payload",
   "description": "Admin dashboard project",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "dist/server.js",
   "license": "MIT",
   "scripts": {
