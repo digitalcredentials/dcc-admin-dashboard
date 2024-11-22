@@ -1,5 +1,10 @@
 # dcc-admin-dashboard Changelog
 
+## 1.0.1 - 2024-11-22
+
+### Fixed
+- Turned off paging on the internal credential query used by the batch emailer. Paging has a default size of 10 that was preventing more than 10 notifications from being emailed.
+
 ## 1.0.0 - 2024-10-11
 
 ### Changed
