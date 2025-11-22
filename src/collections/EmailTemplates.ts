@@ -7,9 +7,10 @@ const placeholderEmailData = `
   <html>
   <body>
 
-    <h2>Hello {{earnerName}}! Claim your credential at this link</h2>
+    <div>
+      <h2>Hello {{earnerName}}! Claim your credential at this link</h2>
       <p>Credential: {{credentialName}}</p>
-    <a href="{{link}}">{{link}}</a>
+      <a href="{{link}}">{{link}}</a>
     </div>
   </body>
 
